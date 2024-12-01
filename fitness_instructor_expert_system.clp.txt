@@ -1,0 +1,216 @@
+; User attributes
+(deftemplate user
+   (slot height)           ; Height in cm
+   (slot weight)           ; Weight in kg
+   (slot age)              ; Age in years
+   (slot body-type)        ; Body type: ectomorph, mesomorph, endomorph
+   (slot goal))            ; Fitness goal: weight-loss, muscle-gain, endurance
+
+; Exercise details
+(deftemplate exercise
+   (slot name)             ; Exercise name
+   (slot category)         ; Category: strength, cardio, flexibility
+   (slot description)      ; Brief explanation
+   (slot equipment))       ; Equipment required, if any
+
+; Diet plans
+(deftemplate diet
+   (slot goal)             ; Fitness goal
+   (slot meal-plan))       ; Suggested meals
+
+; Supplements
+(deftemplate supplement
+   (slot goal)             ; Fitness goal
+   (slot type)             ; Supplement type
+   (slot recommendation))  ; Recommendation details
+
+; Equipment details
+(deftemplate equipment
+   (slot name)             ; Equipment name
+   (slot usage)            ; How it's used
+   (slot related-exercises)) ; Exercises it is used for
+
+; Exercise Facts
+(assert (exercise 
+   (name squat) 
+   (category strength) 
+   (description "Strengthens legs and core.") 
+   (equipment "Barbell")))
+
+(assert (exercise 
+   (name treadmill-running) 
+   (category cardio) 
+   (description "Improves cardiovascular endurance.") 
+   (equipment "Treadmill")))
+
+(assert (exercise 
+   (name bench-press) 
+   (category strength) 
+   (description "Builds chest, shoulders, and triceps.") 
+   (equipment "Barbell")))
+
+(assert (exercise 
+   (name pull-up) 
+   (category strength) 
+   (description "Strengthens back, biceps, and core.") 
+   (equipment "Pull-up bar")))
+
+(assert (exercise 
+   (name deadlift) 
+   (category strength) 
+   (description "Works the entire posterior chain.") 
+   (equipment "Barbell")))
+
+(assert (exercise 
+   (name cycling) 
+   (category cardio) 
+   (description "Enhances cardiovascular fitness and leg strength.") 
+   (equipment "Stationary bike")))
+
+(assert (exercise 
+   (name plank) 
+   (category core) 
+   (description "Strengthens core muscles and improves stability.") 
+   (equipment "None")))
+
+(assert (exercise 
+   (name bicep-curl) 
+   (category strength) 
+   (description "Isolates and strengthens the biceps.") 
+   (equipment "Dumbbells")))
+
+(assert (exercise 
+   (name yoga) 
+   (category flexibility) 
+   (description "Improves flexibility and reduces stress.") 
+   (equipment "Yoga mat")))
+
+(assert (exercise 
+   (name burpees) 
+   (category cardio) 
+   (description "Full-body workout that improves cardiovascular fitness.") 
+   (equipment "None")))
+
+(assert (exercise 
+   (name shoulder-press) 
+   (category strength) 
+   (description "Targets shoulders and triceps.") 
+   (equipment "Dumbbells")))
+
+(assert (exercise 
+   (name rowing-machine) 
+   (category cardio) 
+   (description "Works both cardiovascular and muscular endurance.") 
+   (equipment "Rowing machine")))
+
+(assert (exercise 
+   (name kettlebell-swing) 
+   (category strength) 
+   (description "Improves power and core strength.") 
+   (equipment "Kettlebell")))
+
+(assert (exercise 
+   (name lunges) 
+   (category strength) 
+   (description "Strengthens legs and improves balance.") 
+   (equipment "Dumbbells")))
+
+(assert (exercise 
+   (name push-ups) 
+   (category strength) 
+   (description "Works chest, shoulders, triceps, and core.") 
+   (equipment "None")))
+
+(assert (exercise 
+   (name jumping-jacks) 
+   (category cardio) 
+   (description "Boosts cardiovascular endurance.") 
+   (equipment "None")))
+
+(assert (exercise 
+   (name cable-crossover) 
+   (category strength) 
+   (description "Isolates chest muscles.") 
+   (equipment "Cable machine")))
+
+(assert (exercise 
+   (name leg-press) 
+   (category strength) 
+   (description "Targets quadriceps, hamstrings, and glutes.") 
+   (equipment "Leg press machine")))
+
+(assert (exercise 
+   (name Russian-twists) 
+   (category core) 
+   (description "Strengthens obliques and core muscles.") 
+   (equipment "Medicine ball")))
+
+(assert (exercise 
+   (name step-ups) 
+   (category strength) 
+   (description "Works legs and improves coordination.") 
+   (equipment "Box or bench")))
+
+
+; Diet Facts
+(assert (diet 
+   (goal weight-loss) 
+   (meal-plan "Low-carb meals with plenty of vegetables and lean proteins.")))
+
+(assert (diet 
+   (goal muscle-gain) 
+   (meal-plan "High-protein diet with moderate carbs and healthy fats.")))
+
+; Suppliment Facts
+(assert (supplement 
+   (goal muscle-gain) 
+   (type protein) 
+   (recommendation "Whey protein after workouts.")))
+
+(assert (supplement 
+   (goal weight-loss) 
+   (type fat-burner) 
+   (recommendation "Green tea extract or L-carnitine.")))
+
+;Equipment Facts
+(assert (equipment 
+   (name treadmill) 
+   (usage "Cardio exercises like running or walking.") 
+   (related-exercises "treadmill-running")))
+
+(assert (equipment 
+   (name dumbbell) 
+   (usage "Strength exercises like bicep curls, lunges.") 
+   (related-exercises "bicep-curls, lunges")))
+
+
+;Rules
+
+;Workout plan rules
+(defrule recommend-workout-strength
+   (user (goal muscle-gain) (body-type ectomorph))
+   =>
+   (printout t "Recommended Workout: Focus on weight training with compound exercises like squats and deadlifts." crlf))
+
+;Diet Plan Rules
+(defrule recommend-diet
+   (user (goal ?goal))
+   (diet (goal ?goal) (meal-plan ?plan))
+   =>
+   (printout t "Diet Recommendation: " ?plan crlf))
+
+;Exercise Explanation Rules
+(defrule explain-exercise
+   (exercise (name squat) (description ?desc) (equipment ?equip))
+   =>
+   (printout t "Exercise: Squat" crlf
+              "Description: " ?desc crlf
+              "Equipment: " ?equip crlf))
+
+;Supplement Guidance Rules
+(defrule recommend-supplement
+   (user (goal ?goal))
+   (supplement (goal ?goal) (type ?type) (recommendation ?rec))
+   =>
+   (printout t "Supplement: " ?type crlf
+              "Recommendation: " ?rec crlf))
