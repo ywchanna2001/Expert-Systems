@@ -4,7 +4,7 @@
    (slot weight)           ; Weight in kg
    (slot age)              ; Age in years
    (slot body-type)        ; Body type: ectomorph, mesomorph, endomorph
-   (slot goal))            ; Fitness goal: weight-loss, muscle-gain, endurance
+   (slot goal))            ; Fitness goal: weight-loss, muscle-gain, endurance, 
 
 ; Exercise details
 (deftemplate exercise
@@ -15,14 +15,22 @@
 
 ; Diet plans
 (deftemplate diet
-   (slot goal)             ; Fitness goal
-   (slot meal-plan))       ; Suggested meals
+   (slot goal)             ; Fitness goal (e.g., muscle-gain, weight-loss)
+   (slot name)             ; Name of the diet plan
+   (slot description)      ; Description of the diet plan
+   (slot breakfast)        ; Breakfast meal plan
+   (slot lunch)            ; Lunch meal plan
+   (slot snack)            ; Snack meal plan
+   (slot dinner)           ; Dinner meal plan
+   (slot notes))           ; Additional notes for the diet
+
 
 ; Supplements
 (deftemplate supplement
    (slot goal)             ; Fitness goal
    (slot type)             ; Supplement type
-   (slot recommendation))  ; Recommendation details
+   (slot recommendation)  ; Recommendation details
+   (slot notes))           ; Additional notes or usage tips
 
 ; Equipment details
 (deftemplate equipment
