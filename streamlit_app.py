@@ -1,67 +1,100 @@
 import streamlit as st
 from clips import Environment
 
-# Initialize CLIPS Environment
+# Initialize the Clips Environment
 env = Environment()
-env.load("gym_instructor.clp")  # Load your CLIPS knowledge base
-env.reset()
 
-# Title of the application
-st.title("Gym Expert System")
+# Load the CLIPS rules from the external file
+try:
+    env.load("gym_instructor.clp")
+except Exception as e:
+    st.error(f"Error loading knowledge base: {e}")
 
-# User Options
-options = ["Diet Plans", "Gym Equipments", "Supplements", "Advices about Exercises"]
-choice = st.selectbox("Choose an option:", options)
+# Function to reset and run the CLIPS environment
+def reset_environment():
+    env.reset()
+    env.run()
 
-# Submit choice and determine navigation
-if st.button("Submit Choice"):
-    # Assert user choice into CLIPS
-    if choice == "Diet Plans":
-        env.assert_string('(user-choice 1)')
-        st.subheader("Enter Details for Diet Plan Recommendation")
+def fetch_recommendations():
+    recommendations = []
+    for fact in env.facts():
+        print(fact)  # Debugging the facts
+        if str(fact).startswith("(diet-recommendation"):
+            # Use fact.slot_value to retrieve slot values
+            try:
+                slot_values = {slot.name: fact.slot_value(slot.name) for slot in fact.template.slots}
+                recommendations.append({
+                    "name": slot_values["name"],
+                    "description": slot_values["description"],
+                    "breakfast": slot_values["breakfast"],
+                    "lunch": slot_values["lunch"],
+                    "snack": slot_values["snack"],
+                    "dinner": slot_values["dinner"],
+                    "notes": slot_values["notes"],
+                })
+            except AttributeError as e:
+                print("Error accessing slot value:", e)
+                raise
+    return recommendations
+
+
+
+# Streamlit UI
+st.title("Gym Instructor Expert System")
+
+# Dropdown menu for options
+option = st.selectbox(
+    "Please select an option:",
+    ["Diet plans", "Gym Equipments", "Supplements", "Advices about exercises"]
+)
+
+# Handle Diet Plans Option
+if option == "Diet plans":
+    st.header("Diet Plans")
+
+    with st.form("diet_form"):
+        height = st.number_input("Enter your height (in cm):", min_value=0)
+        weight = st.number_input("Enter your weight (in kg):", min_value=0)
+        age = st.number_input("Enter your age:", min_value=0)
+        body_type = st.selectbox("Select your body type:", ["Ectomorph", "Mesomorph", "Endomorph"])
+        experience_level = st.selectbox("Select your experience level:", ["Beginner", "Intermediate", "Advanced"])
+        goal = st.selectbox("Select your fitness goal:", [
+            "muscle-gain", "fat-loss", "athletic-performance", "general-health", 
+            "immune-boost", "heart-health"
+        ])
+        submitted = st.form_submit_button("Submit")
         
-        # Input fields with session state keys
-        height = st.number_input("Enter your height (cm):", min_value=0, key="height")
-        weight = st.number_input("Enter your weight (kg):", min_value=0, key="weight")
-        age = st.number_input("Enter your age:", min_value=0, key="age")
-        body_type = st.selectbox("Select your body type:", ["ectomorph", "mesomorph", "endomorph"], key="body_type")
-        experience = st.selectbox("Select your experience level:", ["beginner", "intermediate", "advanced"], key="experience")
-        goal = st.selectbox(
-            "Select your fitness goal:",
-            ["muscle-gain", "fat-loss", "athletic-performance", "general-health", "immune-boost", "heart-health"],
-            key="goal"
-        )
 
-        if st.button("Submit Details"):
-            # Assert user details into CLIPS
-            env.assert_string(
-                f'(user (height {height}) (weight {weight}) '
-                f'(age {age}) (body-type "{body_type}") '
-                f'(experience-level "{experience}") (goal "{goal}"))'
-            )
-            env.run()
 
-            # Display diet recommendation
-            diet_facts = list(env.facts())
-            recommendation_found = False
-            for fact in diet_facts:
-                if "Diet Plan Name" in str(fact):
-                    st.text(str(fact))
-                    recommendation_found = True
-            if not recommendation_found:
-                st.text("No recommendations found for the given inputs.")
+    if submitted:
+        # Reset and run the environment
+        reset_environment()
 
-    elif choice == "Gym Equipments":
-        env.assert_string('(user-choice 2)')
-        st.subheader("Information about Gym Equipments")
-        st.text("Detailed instructions about Gym Equipments will be provided here.")
+        # Assert user data into CLIPS
+        env.assert_string(f'(user-details (height {height}) (weight {weight}) (age {age}) '
+                          f'(body-type "{body_type.lower()}") (experience-level "{experience_level.lower()}") '
+                          f'(goal "{goal.lower()}"))')
+        
+        # Debugging: Print all facts in the environment after asserting user details
+        for fact in env.facts():
+            print(fact)
+        env.run()
+        # Check the asserted facts for recommendations
+        for fact in env.facts():
+            print(fact)
 
-    elif choice == "Supplements":
-        env.assert_string('(user-choice 3)')
-        st.subheader("Information about Supplements")
-        st.text("Recommendation system for Supplements is under development. Please check back later.")
+        # Fetch recommendations
+        plans = fetch_recommendations()
 
-    elif choice == "Advices about Exercises":
-        env.assert_string('(user-choice 4)')
-        st.subheader("Advices about Exercises")
-        st.text("General tips and advice about exercises will be added here.")
+        if plans:
+            st.subheader("Recommended Diet Plans:")
+            for plan in plans:
+                st.text(f"Plan Name: {plan['name']}")
+                st.text(f"Description: {plan['description']}")
+                st.text(f"Breakfast: {plan['breakfast']}")
+                st.text(f"Lunch: {plan['lunch']}")
+                st.text(f"Snack: {plan['snack']}")
+                st.text(f"Dinner: {plan['dinner']}")
+                st.text(f"Notes: {plan['notes']}")
+        else:
+            st.error("No diet plans found for your selection.")
