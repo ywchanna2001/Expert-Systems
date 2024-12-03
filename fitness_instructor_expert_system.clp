@@ -4,7 +4,20 @@
    (slot weight)           ; Weight in kg
    (slot age)              ; Age in years
    (slot body-type)        ; Body type: ectomorph, mesomorph, endomorph
-   (slot goal))            ; Fitness goal: weight-loss, muscle-gain, endurance, 
+   (slot experience-level) ; Biginner, Intermediate, Advanced
+   (slot goal))            ; Fitness goal: weight-loss, muscle-gain, endurance
+
+;Ectomorph : A lean body type with long limbs, narrow shoulders and hips, and little muscle or body fat.
+;Ectomorphs have a fast metabolism and may feel hungry often, but they don't gain weight or muscle easily.
+
+;Mesomorph :
+;An athletic body type with well-defined muscles, wide shoulders, and narrow hips. Mesomorphs have an efficient 
+;metabolism and can easily gain muscle and lose fat. However, they may store excess weight in their hips, buttocks, 
+;and thighs, giving them a pear-shaped appearance.
+
+;Endomorph :
+;A curvier body type with a low muscle mass and high degree of central adiposity, or abdominal fat. Endomorphs
+;have a naturally slow metabolism and gain and store fat more easily than they lose it.
 
 ; Exercise details
 (deftemplate exercise
@@ -12,6 +25,16 @@
    (slot category)         ; Category: strength, cardio, flexibility
    (slot description)      ; Brief explanation
    (slot equipment))       ; Equipment required, if any
+
+;(deftemplate workout-schedule
+;   (slot id)                    
+;   (slot goal)                  
+;   (slot experience-level)      
+;   (slot description)           
+;   (slot frequency)             
+;   (slot categories (type LIST))
+;   )           ; List of exercise categories to include
+
 
 ; Diet plans
 (deftemplate diet
@@ -162,6 +185,85 @@
    (equipment "Box or bench")))
 
 ;####################################################################
+
+;(deffacts workout-schedules
+;   ;; Weight Loss
+;   (workout-schedule
+;      (id 1)
+;      (goal weight-loss)
+;      (experience-level beginner)
+;      (description "Light cardio and bodyweight strength training")
+;      (frequency "3 days/week")
+;      (categories (cardio strength)))
+
+;   (workout-schedule
+;      (id 2)
+;      (goal weight-loss)
+;      (experience-level intermediate)
+;      (description "Moderate cardio and resistance training")
+;      (frequency "4 days/week")
+;      (categories (cardio strength)))
+
+;   (workout-schedule
+;      (id 3)
+;      (goal weight-loss)
+;      (experience-level advanced)
+;      (description "High-intensity cardio and advanced resistance circuits")
+;      (frequency "5 days/week")
+;      (categories (cardio strength core)))
+
+;   ;; Muscle Gain
+;   (workout-schedule
+;      (id 4)
+;      (goal muscle-gain)
+;      (experience-level beginner)
+;      (description "Strength training with basic equipment and bodyweight exercises")
+;      (frequency "3 days/week")
+;      (categories ("strength")))
+
+;   (workout-schedule
+;      (id 5)
+;      (goal muscle-gain)
+;      (experience-level intermediate)
+;      (description "Split routine with moderate resistance and volume")
+;      (frequency "4 days/week")
+;      (categories ("strength" "core")))
+
+;   (workout-schedule
+;      (id 6)
+;      (goal muscle-gain)
+;      (experience-level advanced)
+;      (description "Advanced split routine with progressive overload techniques")
+;      (frequency "5-6 days/week")
+;      (categories ("strength" "core" "flexibility")))
+
+;   ;; Athletic Performance
+;   (workout-schedule
+;      (id 7)
+;      (goal athletic-performance)
+;      (experience-level beginner)
+;      (description "Functional training with focus on basic movement patterns")
+;      (frequency "3 days/week")
+;      (categories ("strength" "cardio")))
+
+;  (workout-schedule
+;      (id 8)
+;      (goal athletic-performance)
+;      (experience-level intermediate)
+;      (description "Functional training with added intensity and agility work")
+;      (frequency "4 days/week")
+;      (categories ("cardio" "strength" "core")))
+
+;   (workout-schedule
+;      (id 9)
+;      (goal athletic-performance)
+;      (experience-level advanced)
+;      (description "High-intensity functional training with plyometric and endurance focus")
+;      (frequency "5 days/week")
+;      (categories ("cardio" "strength" "core" "flexibility")))
+;)
+
+; #########################################################################################
 
 ; Diet Facts
 
@@ -486,33 +588,24 @@
 ; ######################################################################
 
 
-;Rules
+;(defrule generate-workout-details
+;   (user (goal ?goal) (experience-level ?level))
+;   (workout-schedule (goal ?goal) (experience-level ?level) (categories $?categories))
+;   =>
+;   (printout t "Recommended Workout Plan:" crlf
+;             "Goal: " ?goal crlf
+;             "Experience Level: " ?level crlf
+;             "Workout Details:" crlf)
+;   (foreach ?category $?categories
+;      (printout t "Category: " ?category crlf)
+;      (do-for-all-facts ((?exercise exercise))
+;         (and (eq ?exercise:category ?category))
+;         (printout t "  - " ?exercise:name ": " ?exercise:description " (Equipment: " ?exercise:equipment ")" crlf)))
+;   (printout t crlf))
 
-;Workout plan rules
-(defrule recommend-workout-strength
-   (user (goal muscle-gain) (body-type ectomorph))
-   =>
-   (printout t "Recommended Workout: Focus on weight training with compound exercises like squats and deadlifts." crlf))
 
-;Diet Plan Rules
-(defrule recommend-diet
-   (user (goal ?goal))
-   (diet (goal ?goal) (meal-plan ?plan))
-   =>
-   (printout t "Diet Recommendation: " ?plan crlf))
 
-;Exercise Explanation Rules
-(defrule explain-exercise
-   (exercise (name squat) (description ?desc) (equipment ?equip))
-   =>
-   (printout t "Exercise: Squat" crlf
-              "Description: " ?desc crlf
-              "Equipment: " ?equip crlf))
 
-;Supplement Guidance Rules
-(defrule recommend-supplement
-   (user (goal ?goal))
-   (supplement (goal ?goal) (type ?type) (recommendation ?rec))
-   =>
-   (printout t "Supplement: " ?type crlf
-              "Recommendation: " ?rec crlf))
+
+
+
