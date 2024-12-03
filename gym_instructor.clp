@@ -1,5 +1,5 @@
 ; User attributes
-(deftemplate user
+(deftemplate user-details
    (slot height)           ; Height in cm
    (slot weight)           ; Weight in kg
    (slot age)              ; Age in years
@@ -150,7 +150,7 @@
 (deffacts diet-plan-facts
     "Initial set of diet facts"
     (diet 
-        (goal muscle-gain) 
+        (goal "muscle-gain") 
         (name "High-Protein Muscle Gain Plan") 
         (description "A diet rich in proteins and complex carbs to support muscle repair and growth.") 
         (breakfast "6 egg whites, 2 slices of whole-grain toast, 1 banana, and 1 cup of black coffee.") 
@@ -161,7 +161,7 @@
 
 
     (diet 
-        (goal fat-loss) 
+        (goal "fat-loss") 
         (name "Low-Carb Fat Loss Plan") 
         (description "A diet low in carbs and high in healthy fats to promote fat burning.") 
         (breakfast "2 boiled eggs, 1/2 avocado, and a cup of green tea.") 
@@ -172,7 +172,7 @@
 
 
    (diet 
-        (goal athletic-performance) 
+        (goal "athletic-performance") 
         (name "Performance Boost Plan") 
         (description "A balanced diet to improve stamina, recovery, and overall athletic performance.") 
         (breakfast "Oatmeal with berries, a tablespoon of peanut butter, and a glass of orange juice.") 
@@ -182,7 +182,7 @@
         (notes "Stay hydrated, and consider electrolyte drinks during high-intensity workouts."))
 
     (diet 
-        (goal general-health) 
+        (goal "general-health") 
         (name "Balanced Nutrition Plan") 
         (description "A balanced diet for maintaining general health and wellness.") 
         (breakfast "1 slice of whole-grain toast with avocado, 1 boiled egg, and herbal tea.") 
@@ -193,7 +193,7 @@
 
 
     (diet 
-        (goal muscle-gain) 
+        (goal "muscle-gain") 
         (name "Vegan High-Protein Plan") 
         (description "A plant-based diet rich in proteins to support muscle growth.") 
         (breakfast "Tofu scramble with spinach, a slice of whole-grain toast, and an apple.") 
@@ -204,7 +204,7 @@
 
 
     (diet 
-        (goal immune-boost) 
+        (goal "immune-boost") 
         (name "Immune-Boost Plan") 
         (description "A diet to strengthen immunity with vitamins and antioxidants.") 
         (breakfast "Greek yogurt with honey and a handful of mixed berries.") 
@@ -214,7 +214,7 @@
         (notes "Include foods rich in vitamin C and zinc for added benefits."))
 
     (diet 
-        (goal heart-health) 
+        (goal "heart-health") 
         (name "Heart-Healthy Plan") 
         (description "A diet low in saturated fats and rich in omega-3 for cardiovascular health.") 
         (breakfast "Oatmeal with flaxseeds, walnuts, and blueberries.") 
@@ -469,41 +469,14 @@
         (related-exercises "jumping-rope, double-unders")))
 
 ; ###############################################################################
-
-;Define facts that represent the user's input and options.
-(deffacts initial-options
-   "Provide options to the user"
-   (option "Diet plans")
-   (option "Gym Equipments")
-   (option "Supplements")
-   (option "Advices about exercises"))
-
-
-;Create a rule that asks the user to select one of the options.
-(defrule ask-user-choice
-   (declare (salience 100))
-   ;(initial-fact)
-   =>
-   (printout t "Please select an option by typing:" crlf)
-   (printout t "1. Diet plans" crlf)
-   (printout t "2. Gym Equipments" crlf)
-   (printout t "3. Supplements" crlf)
-   (printout t "4. Advices about exercises" crlf)
-   (printout t "Enter your choice (1-4): ")
-   (bind ?choice (read))
-   (if (or (eq ?choice 1) (eq ?choice 2) (eq ?choice 3) (eq ?choice 4)) then
-      (assert (user-choice ?choice))
-   else
-      (printout t "Invalid choice. Restart and try again." crlf)))
-      
-
-(defrule diet-plans-rule
-   "Respond to Diet plans choice"
-   (user-choice 1)
-   =>
-   (printout t "You selected 'Diet plans'." crlf)
-   ;; Add logic or call other rules here
-   (assert (selected-option "Diet plans")))
+(deftemplate diet-recommendation
+   (slot name)
+   (slot description)
+   (slot breakfast)
+   (slot lunch)
+   (slot snack)
+   (slot dinner)
+   (slot notes))
 
 (defrule gym-equipments-rule
    "Respond to Gym Equipments choice"
@@ -531,37 +504,10 @@
    (assert (selected-option "Advices about exercises")))
 
 
-
-(defrule ask-diet-plan-details
-   "Prompt the user for details if they select Diet plans"
-   (selected-option "Diet plans")
-   =>
-   (printout t "To recommend a diet plan, please provide the following details:" crlf)
-   (printout t "Enter your height (in cm): " crlf)
-   (bind ?height (read))
-   (printout t "Enter your weight (in kg): " crlf)
-   (bind ?weight (read))
-   (printout t "Enter your age: " crlf)
-   (bind ?age (read))
-   (printout t "Enter your body type (ectomorph/mesomorph/endomorph): " crlf)
-   (bind ?body-type (read))
-   (printout t "Enter your experience level (beginner/intermediate/advanced): " crlf)
-   (bind ?experience-level (read))
-   (printout t "Enter your fitness goal (muscle-gain/fat-loss/athletic-performance/general-health/immune-boost/heart-health): " crlf)
-   (bind ?goal (read))
-   ;; Assert the user details as a fact
-   (assert (user (height ?height)
-                 (weight ?weight)
-                 (age ?age)
-                 (body-type ?body-type)
-                 (experience-level ?experience-level)
-                 (goal ?goal))))
-
-
 (defrule recommend-diets
    "Recommend a diet plan based on the user's fitness goal"
-   ?user-details <- (user (goal ?goal))
-   ?diet-fact <- (diet (goal ?goal)
+   ?user-details <- (user-details (goal ?goal))  ;; Match user goal
+   ?diet-fact <- (diet (goal ?goal)      ;; Match diet plan with the same goal
                        (name ?name)
                        (description ?description)
                        (breakfast ?breakfast)
@@ -570,13 +516,12 @@
                        (dinner ?dinner)
                        (notes ?notes))
    =>
-   (printout t "Based on your goal: " ?goal ", here is a suitable diet plan:" crlf)
-   (printout t "Diet Plan Name: " ?name crlf)
-   (printout t "Description: " ?description crlf)
-   (printout t "Breakfast: " ?breakfast crlf)
-   (printout t "Lunch: " ?lunch crlf)
-   (printout t "Snack: " ?snack crlf)
-   (printout t "Dinner: " ?dinner crlf)
-   (printout t "Notes: " ?notes crlf crlf))
-
-
+   ;; Assert a recommendation based on the matched goal
+   (assert (diet-recommendation 
+            (name ?name) 
+            (description ?description)
+            (breakfast ?breakfast)
+            (lunch ?lunch)
+            (snack ?snack)
+            (dinner ?dinner)
+            (notes ?notes))))
