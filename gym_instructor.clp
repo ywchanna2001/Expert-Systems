@@ -29,7 +29,7 @@
 (deftemplate supplement
    (slot goal)             ; Fitness goal
    (slot type)             ; Supplement type
-   (slot recommendation)  ; Recommendation details
+   (slot recommendation)   ; Recommendation details
    (slot notes))           ; Additional notes or usage tips
 
 ; Equipment details
@@ -230,7 +230,7 @@
 ; Supplement Facts
 
 (deffacts supplement-facts
-    "Initial set of suppliment facts"
+    "Initial set of supplement facts"
     (supplement 
         (goal muscle-gain) 
         (type protein) 
@@ -478,6 +478,13 @@
    (slot dinner)
    (slot notes))
 
+(deftemplate supplement-recommendation
+   (slot goal)             
+   (slot type)            
+   (slot recommendation)   
+   (slot notes))           
+
+
 (defrule gym-equipments-rule
    "Respond to Gym Equipments choice"
    (user-choice 2)
@@ -504,6 +511,7 @@
    (assert (selected-option "Advices about exercises")))
 
 
+;rule to suggest diet plans
 (defrule recommend-diets
    "Recommend a diet plan based on the user's fitness goal"
    ?user-details <- (user-details (goal ?goal))  ;; Match user goal
@@ -524,4 +532,20 @@
             (lunch ?lunch)
             (snack ?snack)
             (dinner ?dinner)
+            (notes ?notes))))
+
+
+;rule to suggest supplements
+(defrule recommend-supplements
+   "Recommend a supplement plan based on the user's fitness goal"
+   ?user-details <- (user-details (goal ?goal))  ;; Match user goal
+   ?supplement-fact <- (supplement (goal ?goal)      ;; Match diet plan with the same goal
+                       (type ?type)
+                       (recommendation ?recommendation)
+                       (notes ?notes))
+   =>
+   ;; Assert a recommendation based on the matched goal
+   (assert (supplement-recommendation 
+            (type ?type)
+            (recommendation ?recommendation)
             (notes ?notes))))
