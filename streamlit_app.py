@@ -18,11 +18,11 @@ def reset_environment():
 def fetch_recommendations():
     recommendations = []
     for fact in env.facts():
-        print(fact)  # Debugging the facts
+        print("Fact Debugging:", fact)  # Debugging the facts
         if str(fact).startswith("(diet-recommendation"):
-            # Use fact.slot_value to retrieve slot values
+            # Extract slot values directly from the slots dictionary
             try:
-                slot_values = {slot.name: fact.slot_value(slot.name) for slot in fact.template.slots}
+                slot_values = {slot.name: fact[slot.name] for slot in fact.template.slots}
                 recommendations.append({
                     "name": slot_values["name"],
                     "description": slot_values["description"],
@@ -32,10 +32,11 @@ def fetch_recommendations():
                     "dinner": slot_values["dinner"],
                     "notes": slot_values["notes"],
                 })
-            except AttributeError as e:
+            except Exception as e:
                 print("Error accessing slot value:", e)
                 raise
     return recommendations
+
 
 
 
