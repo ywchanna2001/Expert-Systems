@@ -152,12 +152,42 @@
     (diet 
         (goal "muscle-gain") 
         (name "High-Protein Muscle Gain Plan") 
-        (description "A diet rich in proteins and complex carbs to support muscle repair and growth.") 
+        (description "Designed to fuel your journey to building muscle, this diet plan emphasizes high-protein foods to support muscle repair and growth, alongside complex carbohydrates to provide sustained energy for intense workouts. Healthy fats are included to enhance recovery and overall hormonal balance, creating the perfect nutritional foundation for achieving your muscle-gain goals.") 
         (breakfast "6 egg whites, 2 slices of whole-grain toast, 1 banana, and 1 cup of black coffee.") 
         (lunch "Grilled chicken breast, 1 cup of brown rice, and steamed broccoli.") 
         (snack "Greek yogurt with a handful of almonds.") 
         (dinner "Grilled salmon, sweet potato, and a mixed green salad with olive oil dressing.") 
         (notes "Ensure adequate hydration and supplement with a protein shake post-workout."))
+
+    (diet 
+        (goal "muscle-gain") 
+        (name "Plant-Based Muscle Gain Plan") 
+        (description "A nutrient-dense plant-based diet packed with proteins, healthy fats, and complex carbohydrates to support muscle growth and recovery.") 
+        (breakfast "Tofu scramble with spinach, mushrooms, and whole-grain toast, paired with a cup of almond milk.") 
+        (lunch "Lentil and quinoa salad with mixed greens, cherry tomatoes, and tahini dressing.") 
+        (snack "A protein smoothie with pea protein, almond butter, banana, and oat milk.") 
+        (dinner "Chickpea curry with brown rice and roasted vegetables.") 
+        (notes "Include fortified plant-based foods for additional B12 and iron, and consider a vegan protein powder post-workout."))
+
+    (diet 
+        (goal "muscle-gain") 
+        (name "Keto Muscle Gain Plan") 
+        (description "A high-fat, moderate-protein, and low-carb diet designed to support muscle growth while staying in ketosis.") 
+        (breakfast "3 scrambled eggs cooked in butter, 2 slices of avocado, and a handful of walnuts.") 
+        (lunch "Grilled chicken thighs with sautéed spinach and cauliflower rice.") 
+        (snack "A keto-friendly protein shake with coconut milk and chia seeds.") 
+        (dinner "Baked salmon with asparagus and a side of zucchini noodles tossed in olive oil.") 
+        (notes "Monitor your carb intake carefully and ensure adequate electrolytes to sustain energy during workouts."))
+
+    (diet 
+        (goal "muscle-gain") 
+        (name "High-Calorie Bulk Plan") 
+        (description "A calorie-dense plan ideal for individuals looking to maximize muscle gain by consuming surplus calories.") 
+        (breakfast "4 scrambled eggs, 2 slices of whole-grain toast with peanut butter, and a glass of whole milk.") 
+        (lunch "Grilled beef burger (without the bun), a baked potato, and a side of steamed green beans.") 
+        (snack "Cottage cheese with a handful of mixed nuts and honey.") 
+        (dinner "Grilled chicken thighs, quinoa, and roasted sweet potatoes.") 
+        (notes "Add calorie-dense snacks like trail mix or nut butter to meet your daily caloric needs."))
 
 
     (diet 
@@ -169,6 +199,27 @@
         (snack "1 small handful of mixed nuts and seeds.") 
         (dinner "Grilled turkey burger without the bun, sautéed spinach, and steamed asparagus.") 
         (notes "Avoid processed sugars and include at least 30 minutes of daily exercise."))
+
+    (diet 
+        (goal "fat-loss") 
+        (name "High-Protein Fat Loss Plan") 
+        (description "A high-protein diet designed to preserve muscle mass while promoting fat loss.") 
+        (breakfast "3 egg whites, 1 slice of whole-grain toast, and a cup of black coffee.") 
+        (lunch "Grilled salmon with a side of quinoa and steamed broccoli.") 
+        (snack "Greek yogurt (low-fat) with a sprinkle of chia seeds.") 
+        (dinner "Grilled chicken breast with roasted zucchini and a mixed green salad with olive oil dressing.") 
+        (notes "Stay hydrated and prioritize lean protein sources to enhance satiety and fat metabolism."))
+
+    (diet 
+        (goal "fat-loss") 
+        (name "Vegan Fat Loss Plan") 
+        (description "A nutrient-dense, plant-based diet focused on whole foods to support fat loss.") 
+        (breakfast "Chia pudding made with almond milk, topped with fresh blueberries and sliced almonds.") 
+        (lunch "Quinoa and chickpea salad with mixed greens, cherry tomatoes, and lemon-tahini dressing.") 
+        (snack "A handful of roasted chickpeas or air-popped popcorn.") 
+        (dinner "Lentil stew with a side of steamed broccoli and roasted sweet potatoes.") 
+        (notes "Include fortified foods or supplements to meet B12 and iron needs."))
+
 
 
    (diet 
@@ -182,6 +233,37 @@
         (notes "Stay hydrated, and consider electrolyte drinks during high-intensity workouts."))
 
     (diet 
+        (goal "athletic-performance") 
+        (name "Endurance Fuel Plan") 
+        (description "Designed to sustain energy levels during long training sessions, this plan combines complex carbs, lean proteins, and essential fats.") 
+        (breakfast "Scrambled eggs with spinach, whole-grain toast, and a cup of mixed berries.") 
+        (lunch "Grilled salmon with a side of brown rice and steamed broccoli.") 
+        (snack "Trail mix with nuts, seeds, and dried fruits.") 
+        (dinner "Whole-wheat pasta with grilled chicken, olive oil, cherry tomatoes, and Parmesan cheese.") 
+        (notes "Include carb-rich snacks before and after workouts to optimize energy and recovery."))
+
+    (diet 
+        (goal "athletic-performance") 
+        (name "Plant-Based Power Plan") 
+        (description "A plant-based diet emphasizing nutrient-dense foods to fuel athletic performance and recovery.") 
+        (breakfast "Chia seed pudding with almond milk, topped with sliced bananas and a handful of walnuts.") 
+        (lunch "Lentil and quinoa salad with mixed greens, roasted veggies, and tahini dressing.") 
+        (snack "A protein smoothie with pea protein, spinach, and frozen mango.") 
+        (dinner "Tofu stir-fry with brown rice, bell peppers, broccoli, and a ginger-soy glaze.") 
+        (notes "Ensure adequate intake of plant-based protein sources and consider a B12 supplement."))
+
+    (diet 
+        (goal "athletic-performance") 
+        (name "Keto-Athlete Plan") 
+        (description "A low-carb, high-fat ketogenic plan tailored for athletes focusing on fat as the primary fuel source.") 
+        (breakfast "Scrambled eggs with spinach and a side of avocado.") 
+        (lunch "Grilled chicken with a side of mixed greens, olive oil dressing, and a sprinkle of feta cheese.") 
+        (snack "A handful of macadamia nuts.") 
+        (dinner "Grilled salmon with cauliflower mash and roasted Brussels sprouts.") 
+        (notes "Monitor carb intake carefully to stay in ketosis and include electrolytes for hydration."))
+
+
+    (diet 
         (goal "general-health") 
         (name "Balanced Nutrition Plan") 
         (description "A balanced diet for maintaining general health and wellness.") 
@@ -191,16 +273,25 @@
         (dinner "Grilled fish, roasted vegetables, and a small portion of quinoa.") 
         (notes "Include plenty of water, and aim for 5 servings of fruits and vegetables daily."))
 
+    (diet 
+        (goal "general-health") 
+        (name "Plant-Based Health Plan") 
+        (description "A plant-forward diet to promote overall wellness, packed with vitamins, minerals, and fiber.") 
+        (breakfast "Chia seed pudding made with almond milk, topped with sliced banana and a sprinkle of flaxseeds.") 
+        (lunch "Lentil and vegetable soup with a slice of whole-grain bread.") 
+        (snack "A handful of unsalted mixed nuts and a pear.") 
+        (dinner "Tofu stir-fry with brown rice, broccoli, bell peppers, and a sesame-soy glaze.") 
+        (notes "Aim for a variety of colorful vegetables to maximize nutrient intake."))
 
     (diet 
-        (goal "muscle-gain") 
-        (name "Vegan High-Protein Plan") 
-        (description "A plant-based diet rich in proteins to support muscle growth.") 
-        (breakfast "Tofu scramble with spinach, a slice of whole-grain toast, and an apple.") 
-        (lunch "Lentil curry with quinoa and a side of steamed vegetables.") 
-        (snack "A protein smoothie with pea protein powder, almond milk, and frozen berries.") 
-        (dinner "Grilled tempeh, sweet potato mash, and sautéed kale.") 
-        (notes "Supplement with B12 and omega-3 if needed."))
+        (goal "general-health") 
+        (name "High-Fiber Nutrition Plan") 
+        (description "A diet emphasizing high-fiber foods for improved digestion and overall wellness.") 
+        (breakfast "Whole-grain cereal with low-fat milk and a handful of raspberries.") 
+        (lunch "Black bean and avocado salad with a lime vinaigrette.") 
+        (snack "Air-popped popcorn or a handful of almonds.") 
+        (dinner "Grilled chicken breast, quinoa, and steamed green beans.") 
+        (notes "Ensure at least 25-30 grams of fiber daily by including fruits, vegetables, and whole grains."))
 
 
     (diet 
@@ -214,6 +305,28 @@
         (notes "Include foods rich in vitamin C and zinc for added benefits."))
 
     (diet 
+        (goal "immune-boost") 
+        (name "Antioxidant-Rich Plan") 
+        (description "A diet emphasizing foods packed with antioxidants, vitamins, and minerals to support immune function.") 
+        (breakfast "Oatmeal topped with blueberries, walnuts, and a drizzle of honey.") 
+        (lunch "Grilled chicken breast, steamed asparagus, and a side of sweet potato.") 
+        (snack "A handful of mixed nuts and a small orange.") 
+        (dinner "Stir-fried tofu with bell peppers, broccoli, and garlic served over brown rice.") 
+        (notes "Incorporate a variety of colorful fruits and vegetables daily to maximize antioxidants."))
+    
+    (diet 
+        (goal "immune-boost") 
+        (name "Vitamin-D Support Plan") 
+        (description "A diet incorporating foods and nutrients to improve vitamin D levels and immunity.") 
+        (breakfast "Egg omelet with spinach, mushrooms, and a slice of whole-grain toast.") 
+        (lunch "Grilled salmon with a side of roasted Brussels sprouts and mashed sweet potato.") 
+        (snack "A handful of walnuts and a small bunch of grapes.") 
+        (dinner "Grilled chicken with a mixed greens salad and a drizzle of olive oil.") 
+        (notes "Pair foods rich in vitamin D with healthy fats for better absorption."))
+
+
+
+    (diet 
         (goal "heart-health") 
         (name "Heart-Healthy Plan") 
         (description "A diet low in saturated fats and rich in omega-3 for cardiovascular health.") 
@@ -221,7 +334,18 @@
         (lunch "Grilled salmon, quinoa, and steamed asparagus.") 
         (snack "A handful of unsalted nuts and an apple.") 
         (dinner "Grilled chicken, brown rice, and a side of mixed greens with olive oil dressing.") 
-        (notes "Limit sodium intake and avoid trans fats.")))
+        (notes "Limit sodium intake and avoid trans fats."))
+
+    (diet 
+        (goal "heart-health") 
+        (name "Mediterranean Heart-Health Plan") 
+        (description "Inspired by the Mediterranean diet, this plan emphasizes healthy fats, whole grains, and fresh produce to support cardiovascular health.") 
+        (breakfast "Whole-grain toast with avocado, a boiled egg, and a side of fresh orange slices.") 
+        (lunch "Grilled mackerel, a quinoa and chickpea salad with cherry tomatoes, cucumber, and olive oil dressing.") 
+        (snack "Greek yogurt with a drizzle of honey and a handful of almonds.") 
+        (dinner "Baked cod with lemon and herbs, steamed broccoli, and roasted sweet potatoes.") 
+        (notes "Incorporate olive oil as the primary cooking fat, and eat fatty fish at least twice a week.")))
+
 
 
 ; #######################################################################################################
