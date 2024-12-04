@@ -7,6 +7,13 @@
    (slot experience-level) ; Biginner, Intermediate, Advanced
    (slot goal))            ; Fitness goal: weight-loss, muscle-gain, endurance
 
+; User inputs for supplement recommendation
+(deftemplate user-details-supplements
+    (slot height)           ; Height in cm
+    (slot weight)           ; Weight in kg
+    (slot goal)            ; Fitness goal: weight-loss, muscle-gain, endurance
+    )
+
 ; Exercise details
 (deftemplate exercise
    (slot name)             ; Exercise name
@@ -356,133 +363,133 @@
 (deffacts supplement-facts
     "Initial set of supplement facts"
     (supplement 
-        (goal muscle-gain) 
-        (type protein) 
+        (goal "muscle-gain") 
+        (type "protein") 
         (recommendation "Whey protein after workouts for muscle repair and growth.") 
         (notes "Best taken within 30 minutes post-workout."))
 
     (supplement 
-        (goal muscle-gain) 
-        (type creatine) 
+        (goal "muscle-gain") 
+        (type "creatine") 
         (recommendation "Creatine monohydrate for strength and size gains.") 
         (notes "Take 5 grams daily, preferably post-workout."))
 
     (supplement 
-        (goal muscle-gain) 
-        (type BCAA) 
+        (goal "muscle-gain") 
+        (type "BCAA") 
         (recommendation "Branched-Chain Amino Acids (BCAAs) to reduce muscle soreness.") 
         (notes "Consume during or immediately after workouts."))
 
     (supplement 
-        (goal muscle-gain) 
-        (type pre-workout) 
+        (goal "muscle-gain") 
+        (type "pre-workout") 
         (recommendation "Pre-workout supplements for increased energy and focus.") 
         (notes "Take 20-30 minutes before workouts. Avoid if sensitive to caffeine."))
 
     (supplement 
-        (goal weight-loss) 
-        (type fat-burner) 
+        (goal "weight-loss") 
+        (type "fat-burner") 
         (recommendation "Green tea extract to boost metabolism.") 
         (notes "Take 1-2 capsules with meals."))
 
     (supplement 
-        (goal weight-loss) 
-        (type L-carnitine) 
+        (goal "weight-loss") 
+        (type "L-carnitine") 
         (recommendation "L-carnitine to promote fat burning during workouts.") 
         (notes "Consume 1-2 grams before exercise."))
 
     (supplement 
-        (goal weight-loss) 
-        (type CLA) 
+        (goal "weight-loss") 
+        (type "CLA") 
         (recommendation "Conjugated Linoleic Acid (CLA) to support fat loss.") 
         (notes "Take 1-2 grams with meals."))
 
     (supplement 
-        (goal weight-loss) 
-        (type fiber) 
+        (goal "weight-loss") 
+        (type "fiber") 
         (recommendation "Psyllium husk to improve satiety and digestion.") 
         (notes "Mix 1 teaspoon in water before meals."))
 
     
     (supplement 
-        (goal athletic-performance) 
-        (type beta-alanine) 
+        (goal "athletic-performance") 
+        (type "beta-alanine") 
         (recommendation "Beta-alanine to delay fatigue during high-intensity activities.") 
         (notes "Take 2-5 grams daily, preferably before workouts."))
 
     (supplement 
-        (goal athletic-performance) 
-        (type electrolyte) 
+        (goal "athletic-performance") 
+        (type "electrolyte") 
         (recommendation "Electrolyte powders to maintain hydration during endurance activities.") 
         (notes "Mix with water and consume during workouts."))
 
     (supplement 
-        (goal athletic-performance) 
-        (type caffeine) 
+        (goal "athletic-performance") 
+        (type "caffeine") 
         (recommendation "Caffeine for improved endurance and focus.") 
         (notes "Consume 100-200 mg 30 minutes before workouts. Avoid late in the day to prevent sleep issues."))
 
     
     (supplement 
-        (goal general-health) 
-        (type multivitamin) 
+        (goal "general-health") 
+        (type "multivitamin") 
         (recommendation "A high-quality multivitamin to cover daily nutrient needs.") 
         (notes "Take with breakfast for optimal absorption."))
 
     (supplement 
-        (goal general-health) 
-        (type omega-3) 
+        (goal "general-health") 
+        (type "omega-3") 
         (recommendation "Fish oil or flaxseed oil for heart and brain health.") 
         (notes "Take 1-2 grams daily with meals."))
 
     (supplement 
-        (goal general-health) 
-        (type vitamin-D) 
+        (goal "general-health") 
+        (type "vitamin-D") 
         (recommendation "Vitamin D3 for immune support and bone health.") 
         (notes "Take 1000-2000 IU daily, preferably with a meal containing fat."))
 
     (supplement 
-        (goal general-health) 
-        (type magnesium) 
+        (goal "general-health") 
+        (type "magnesium") 
         (recommendation "Magnesium to support muscle function and reduce cramps.") 
         (notes "Take 200-400 mg before bed for relaxation and better sleep."))
 
     
     (supplement 
-        (goal recovery) 
-        (type glutamine) 
+        (goal "recovery") 
+        (type "glutamine") 
         (recommendation "Glutamine for improved recovery and immune support.") 
         (notes "Take 5-10 grams post-workout or before bed."))
 
     (supplement 
-        (goal recovery) 
-        (type zinc-magnesium) 
+        (goal "recovery") 
+        (type "zinc-magnesium") 
         (recommendation "ZMA (Zinc, Magnesium, Vitamin B6) to enhance recovery and sleep.") 
         (notes "Take before bed on an empty stomach."))
 
     
     (supplement 
-        (goal immune-boost) 
-        (type vitamin-C) 
+        (goal "immune-boost") 
+        (type "vitamin-C") 
         (recommendation "Vitamin C for enhanced immune function.") 
         (notes "Take 500-1000 mg daily, especially during illness or stress."))
 
     (supplement 
-        (goal immune-boost) 
-        (type echinacea) 
+        (goal "immune-boost") 
+        (type "echinacea") 
         (recommendation "Echinacea extract to reduce the severity and duration of colds.") 
         (notes "Use at the onset of symptoms for best results."))
 
     (supplement 
-        (goal immune-boost) 
-        (type probiotics) 
+        (goal "immune-boost") 
+        (type "probiotics") 
         (recommendation "Probiotic supplements to improve gut health and immunity.") 
         (notes "Consume daily with meals."))
 
     
     (supplement 
-        (goal cognitive-boost) 
-        (type nootropics) 
+        (goal "cognitive-boost") 
+        (type "nootropics") 
         (recommendation "Nootropics like L-theanine and alpha-GPC to enhance focus.") 
         (notes "Take 1-2 capsules as needed, typically before mentally demanding tasks.")))
 
@@ -602,7 +609,7 @@
    (slot dinner)
    (slot notes))
 
-(deftemplate supplement-recommendation
+(deftemplate recommendation-supplement
    (slot goal)             
    (slot type)            
    (slot recommendation)   
@@ -662,14 +669,15 @@
 ;rule to suggest supplements
 (defrule recommend-supplements
    "Recommend a supplement plan based on the user's fitness goal"
-   ?user-details <- (user-details (goal ?goal))  ;; Match user goal
-   ?supplement-fact <- (supplement (goal ?goal)      ;; Match diet plan with the same goal
+   ?user-details-supplements <- (user-details-supplements (goal ?goal))  ;; Match user goal
+   ?supplement-facts <- (supplement (goal ?goal)  ;; Match diet suppliment with the same goal
                        (type ?type)
                        (recommendation ?recommendation)
                        (notes ?notes))
    =>
    ;; Assert a recommendation based on the matched goal
-   (assert (supplement-recommendation 
+   (assert (recommendation-supplement
+            (goal ?goal)
             (type ?type)
             (recommendation ?recommendation)
             (notes ?notes))))
