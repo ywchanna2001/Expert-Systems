@@ -15,6 +15,7 @@ def reset_environment():
     env.reset()
     env.run()
 
+# Function to fetch diet recommendations
 def fetch_recommendations():
     recommendations = []
     for fact in env.facts():
@@ -30,6 +31,24 @@ def fetch_recommendations():
                     "lunch": slot_values["lunch"],
                     "snack": slot_values["snack"],
                     "dinner": slot_values["dinner"],
+                    "notes": slot_values["notes"],
+                })
+            except Exception as e:
+                print("Error accessing slot value:", e)
+                raise
+    return recommendations
+
+# Function to fetch supplement recommendations
+def fetch_supplement_recommendations():
+    recommendations = []
+    for fact in env.facts():
+        print("Fact Debugging:", fact)  # Debugging the facts
+        if str(fact).startswith("(recommendation-supplement"):
+            try:
+                slot_values = {slot.name: fact[slot.name] for slot in fact.template.slots}
+                recommendations.append({
+                    "type": slot_values["type"],
+                    "recommendation": slot_values["recommendation"],
                     "notes": slot_values["notes"],
                 })
             except Exception as e:
@@ -99,3 +118,47 @@ if option == "Diet plans":
                 st.text(f"Notes: {plan['notes']}")
         else:
             st.error("No diet plans found for your selection.")
+
+# Handle Suppliments Option
+elif option == "Supplements":
+    st.header("Supplement Recommendations")
+
+    with st.form("diet_form"):
+        height = st.number_input("Enter your height (in cm):", min_value=0)
+        weight = st.number_input("Enter your weight (in kg):", min_value=0)
+        goal = st.selectbox("Select your fitness goal:", [
+            "muscle-gain", "weight-loss", "athletic-performance", "general-health" 
+            ,"recovery", "immune-boost", "heart-health"
+        ])
+        submitted = st.form_submit_button("Submit")
+        
+
+
+    if submitted:
+        # Reset and run the environment
+        reset_environment()
+
+        # Assert user data into CLIPS
+        env.assert_string(f'(user-details-supplements (height {height}) (weight {weight}) '
+                          f'(goal "{goal.lower()}"))')
+        
+        # Debugging: Print all facts in the environment after asserting user details
+        for fact in env.facts():
+            print(fact)
+        env.run()
+        # Check the asserted facts for recommendations
+        for fact in env.facts():
+            print(fact)
+
+        # Fetch recommendations
+        supplements = fetch_supplement_recommendations()
+
+        if supplements:
+            st.subheader("Recommended Supplements:")
+            for supplement in supplements:
+                
+                st.text(f"Type: {supplement['type']}")
+                st.text(f"Recommendation: {supplement['recommendation']}")
+                st.text(f"Notes: {supplement['notes']}")        
+        else:
+            st.error("No supplement reccomendations found for your selection.")
