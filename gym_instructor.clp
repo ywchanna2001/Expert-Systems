@@ -7,12 +7,48 @@
    (slot experience-level) ; Biginner, Intermediate, Advanced
    (slot goal))            ; Fitness goal: weight-loss, muscle-gain, endurance
 
+; User attributes/inputs for workout plan
+(deftemplate user-details-workout-plan
+   (slot height)           ; Height in cm
+   (slot weight)           ; Weight in kg
+   (slot age)              ; Age in years
+   (slot body-type)        ; Body type: ectomorph, mesomorph, endomorph
+   (slot experience-level) ; Biginner, Intermediate, Advanced
+   (slot goal))            ; Fitness goal: weight-loss, muscle-gain, endurance
+
+(deftemplate best-plan
+   "Represents the current best workout plan based on score"
+   (slot id)
+   (slot score))
+
+
 ; User inputs for supplement recommendation
 (deftemplate user-details-supplements
     (slot height)           ; Height in cm
     (slot weight)           ; Weight in kg
     (slot goal)            ; Fitness goal: weight-loss, muscle-gain, endurance
     )
+
+;Template for workout plans
+(deftemplate workout-plan
+   (slot id)                  ; Unique identifier for the plan
+   (slot goal)                ; Target fitness goal
+   (slot experience-level)    ; Applicable experience level
+   (slot body-type)           ; Suitable body type
+   (slot duration)            ; Duration of workout in minutes
+   (slot frequency)           ; Days per week
+   (slot exercises)           ; Key exercises
+   (slot score))              ; Suitability score
+
+(deftemplate validated-best-plan
+   (slot goal (type STRING))
+   (slot experience-level (type STRING))
+   (slot body-type (type STRING))
+   (slot duration (type INTEGER))
+   (slot frequency (type INTEGER))
+   (slot exercises (type STRING))
+)
+
 
 ; Exercise details
 (deftemplate exercise
@@ -38,6 +74,12 @@
    (slot type)             ; Supplement type
    (slot recommendation)   ; Recommendation details
    (slot notes))           ; Additional notes or usage tips
+
+
+(deftemplate plan-validated
+   (slot id)       ; ID of the workout plan
+   (slot status))  ; Validation status (e.g., "Valid")
+
 
 ; Equipment details
 (deftemplate equipment
@@ -149,6 +191,90 @@
       (category strength) 
       (description "Works legs and improves coordination.") 
       (equipment "Box or bench")))
+
+; ################################################################################
+
+(deffacts workout-plan-facts
+   "Facts for different workout plans based on goals, experience level, and body type"
+   
+   ; Workout Plan for Weight Loss - Beginner
+   (workout-plan
+      (id "WL-BEG-01")
+      (goal "weight-loss")
+      (experience-level "beginner")
+      (body-type "endomorph")
+      (duration 45)
+      (frequency 3)
+      (exercises "Brisk walking, Bodyweight squats, Push-ups, Plank")
+      (score 85))
+
+   ; Workout Plan for Weight Loss - Intermediate
+   (workout-plan
+      (id "WL-INT-01")
+      (goal "weight-loss")
+      (experience-level "intermediate")
+      (body-type "mesomorph")
+      (duration 60)
+      (frequency 4)
+      (exercises "Jogging, Lunges, Dumbbell rows, Mountain climbers")
+      (score 90))
+
+   ; Workout Plan for Muscle Gain - Beginner
+   (workout-plan
+      (id "MG-BEG-01")
+      (goal "muscle-gain")
+      (experience-level "beginner")
+      (body-type "ectomorph")
+      (duration 50)
+      (frequency 3)
+      (exercises "Dumbbell bench press, Barbell deadlift, Pull-ups, Plank")
+      (score 80))
+
+   ; Workout Plan for Muscle Gain - Advanced
+   (workout-plan
+      (id "MG-ADV-01")
+      (goal "muscle-gain")
+      (experience-level "advanced")
+      (body-type "mesomorph")
+      (duration 90)
+      (frequency 5)
+      (exercises "Barbell squats, Bench press, Deadlift, Weighted pull-ups, Overhead press")
+      (score 95))
+
+   ; Workout Plan for Endurance - Beginner
+   (workout-plan
+      (id "EN-BEG-01")
+      (goal "endurance")
+      (experience-level "beginner")
+      (body-type "any")
+      (duration 30)
+      (frequency 2)
+      (exercises "Cycling, Jump rope, Bodyweight circuit training")
+      (score 70))
+
+   ; Workout Plan for Endurance - Intermediate
+   (workout-plan
+      (id "EN-INT-01")
+      (goal "endurance")
+      (experience-level "intermediate")
+      (body-type "any")
+      (duration 60)
+      (frequency 4)
+      (exercises "Running intervals, Kettlebell swings, Rowing machine")
+      (score 85))
+
+   ; Workout Plan for Endurance - Advanced
+   (workout-plan
+      (id "EN-ADV-01")
+      (goal "endurance")
+      (experience-level "advanced")
+      (body-type "any")
+      (duration 75)
+      (frequency 5)
+      (exercises "Marathon training, High-intensity interval training (HIIT), Long-distance cycling")
+      (score 95)))
+
+
 
 ; ################################################################################
 
@@ -615,33 +741,6 @@
    (slot recommendation)   
    (slot notes))           
 
-
-(defrule gym-equipments-rule
-   "Respond to Gym Equipments choice"
-   (user-choice 2)
-   =>
-   (printout t "You selected 'Gym Equipments'." crlf)
-   ;; Add logic or call other rules here
-   (assert (selected-option "Gym Equipments")))
-
-
-(defrule supplements-rule
-   "Respond to Supplements choice"
-   (user-choice 3)
-   =>
-   (printout t "You selected 'Supplements'." crlf)
-   ;; Add logic or call other rules here
-   (assert (selected-option "Supplements")))
-
-(defrule advices-rule
-   "Respond to Advices about exercises choice"
-   (user-choice 4)
-   =>
-   (printout t "You selected 'Advices about exercises'." crlf)
-   ;; Add logic or call other rules here
-   (assert (selected-option "Advices about exercises")))
-
-
 ;rule to suggest diet plans
 (defrule recommend-diets
    "Recommend a diet plan based on the user's fitness goal"
@@ -681,3 +780,65 @@
             (type ?type)
             (recommendation ?recommendation)
             (notes ?notes))))
+
+
+
+;; Scoring rules
+
+;score rule for goal 
+(defrule calculate-score-goal
+   "Increase score for matching fitness goals"
+   ?user-details-workout-plan <- (user-details-workout-plan (goal ?goal))
+   ?plan <- (workout-plan (goal ?goal) (score ?score))
+   =>
+   (modify ?plan (score (+ ?score 10))))
+
+;score rule for experience levels
+(defrule calculate-score-experience
+   "Increase score for matching experience levels"
+   ?user-details-workout-plan <- (user-details-workout-plan (experience-level ?experience))
+   ?plan <- (workout-plan (experience-level ?experience) (score ?score))
+   =>
+   (modify ?plan (score (+ ?score 5))))
+
+;score rule for body type
+(defrule calculate-score-body-type
+   "Increase score for matching body types"
+   ?user-details-workout-plan <- (user-details-workout-plan (body-type ?body-type))
+   ?plan <- (workout-plan (body-type ?body-type) (score ?score))
+   =>
+   (modify ?plan (score (+ ?score 3))))
+
+
+
+(defrule find-best-plan
+   "Identify the best workout plan based on the highest score"
+   ?current-best <- (best-plan (id ?best-id) (score ?best-score))
+   ?plan <- (workout-plan (id ?plan-id) (score ?score&: (> ?score ?best-score)))
+   =>
+   (retract ?current-best)
+   (assert (best-plan (id ?plan-id) (score ?score))))
+
+;; Initial fact for comparison
+(deffacts initialize-best-plan
+   (best-plan (id "none") (score 0)))
+
+(defrule create-validated-best-plan
+   ?best <- (best-plan (id ?id&~"none") (score ?score))
+   ?plan <- (workout-plan (id ?id)
+                          (goal ?goal)
+                          (experience-level ?exp-level)
+                          (body-type ?body-type)
+                          (duration ?duration)
+                          (frequency ?freq)
+                          (exercises ?exercises))
+   =>
+   (assert (validated-best-plan 
+      (goal ?goal)
+      (experience-level ?exp-level)
+      (body-type ?body-type)
+      (duration ?duration)
+      (frequency ?freq)
+      (exercises ?exercises)
+   ))
+)
